@@ -215,3 +215,6 @@ systemctl enable nginx.service
 ```shell
 systemctl start nginx.service
 ```
+
+# 11. 最后
+最后说一句：整个 /opt/software 里面的压缩包，源码包，安装这种方式安装的话，出了 nginx 的安装目录 (/opt/software/nginx-1.17.6) 外，全部都可以删掉了。
