@@ -95,14 +95,14 @@ public class RouteConfigruation {
 |:- | :-: | :-|
 | After | 请求在指定的时间后 | - After=2018-01-20T06:06:06+08:00[Asia/Shanghai] |
 |Before | 请求在指定的时间前| - Before=2018-01-20T06:06:06+08:00[Asia/Shanghai]|
-|Between | 的请求在指定的时间内| - Between=2018-01-20T06:06:06+08:00[Asia/Shanghai]，2019-01-20T06:06:06+08:00[Asia/Shanghai] |
+|Between | 请求在指定的时间内| - Between=2018-01-20T06:06:06+08:00[Asia/Shanghai]，2019-01-20T06:06:06+08:00[Asia/Shanghai] |
 |Cookie | 请求必须带某个key的Cookie，value 是一个正则表达式 | - Cookie=key，regularExpression|
 | Header |请求头必须带某个key，value 是一个正则表达式| - Header=X-Request-Id，\d+|
 | Host |请求来至于对应的主机，才做处理，通过正则配置| - Host=**.baidu.com|
 |Mehtod | 请求的方式限制 | -Method=GET|
 | Path | 请求路径匹配，也是一个正则 | - Path=/server/{num}|
 | Query | 请求包括指定的请求参数，同时支持指定参数(正则设置)的匹配|- Query=arg 或者 - Query=key，regularExpression|
-|RemoteAddr | 请求来自于某个Id| - RemoteAddr=192.168.1.1/24 |
+|RemoteAddr | 请求来自于某个Ip | - RemoteAddr=192.168.1.1/24 |
 
 上面的规则不仅可以单独使用，也可以进行组合使用
 
