@@ -78,7 +78,7 @@ eureka:
 </dependencies>
 ```
 
-3 然后在启动类上加上注解 `@EnableEurekaServer`
+3 然后在启动类上加上注解 `@EnableEurekaClient`
 ```java
 @EnableEurekaClient
 @SpringBootApplication

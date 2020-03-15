@@ -10,13 +10,13 @@
 ## 准备
 1. 先建立一个 maven 的父模块，也就是整个项目里面只有一个 pom 文件
 2. 在父 pom 里面添加一些 共用的配置，比如 SpringBoot，SpringCloud 的依赖，可以参考这一个:  [Pom](https://github.com/LCN29/SpringCloud/blob/master/spring-cloud-eureka/pom.xml "父pom配置")
-3. 同时我们需要了能体现效果，我们需要准备2个服务端，2个服务提供方，11个服务调用方
+3. 同时我们需要了能体现效果，我们需要准备2个服务端，2个服务提供方，1个服务调用方
 
 ## 搭建2个服务端
 
 1 服务端的子模块的依赖，启动类，配置可参照这个: [Eureka 简单使用](https://blog.csdn.net/LCN29/article/details/102019053) 中 `建立一个单机的 Eureka 服务端`  
 
-2 在resources里面 新建2个新的配置文件 `application-8081.yml` 和 `application-8082.yml`，那么现在有3个配置文件了，配置的内容可参考一下 [这里](https://github.com/LCN29/SpringCloud/tree/master/spring-cloud-ribbon/server-eureka/src/main/resources)
+2 在 resources 里面 新建2个新的配置文件 `application-8081.yml` 和 `application-8082.yml`，那么现在有 3 个配置文件了(包含 application.yml)，配置的内容可参考一下 [这里](https://github.com/LCN29/SpringCloud/tree/master/spring-cloud-ribbon/server-eureka/src/main/resources)
 
 3 为了让我们的子模块能够启动为2个服务端，需要我们做一下启动的配置
 >1. Idea 找到 右上角的 这个  
@@ -34,7 +34,7 @@
 
 2 同样在resources里面新建2个新的配置文件 `application-9091.yml` 和 `application-9092.yml`，3个配置文件的内容，可以参考一下 [这里](https://github.com/LCN29/SpringCloud/tree/master/spring-cloud-ribbon/client-provider/src/main/resources)
 
-3 配置我们的服务提供方的启动命令行能启动2个命令，和服务端的类似
+3 配置我们的服务提供方的启动命令行能启动2个实例，和服务端的类似
 
 4 编写我们的服务提供方提供的服务
 ```java
@@ -53,18 +53,18 @@ public class ProviderController {
 ## 搭建1个服务的调用方
 参照 [Eureka 简单使用](https://blog.csdn.net/LCN29/article/details/102019053) 中 `Eureka 客户端间服务调用` 进行 `Feign`的配置
 
-至此，我们的环境就搭好了，项目如果正常的话，这时候，服务调用方是可以调用到服务提供方的，但是没法负载
+至此，我们的环境就搭好了，项目如果正常的话，这时候，服务调用方是可以调用到服务提供方的，~~但是没法负载~~ 补充: Feign 默认是继承 Ribbon 的，同时使用的是轮询的负载策略，所以这里请求已经默认负载到 2 个服务提供方了。
 
 ## Ribbon 负载均衡
-1 在服务调用方加上依赖
+1 ~~在服务调用方加上依赖~~ 补充: 这一步完全可以省略的，feign自身已经集成了 ribbon 功能, 所以这里是可以不用引用的。
 ```xml
-<!-- 负载均衡 -->
+<!-- 负载均衡 feign自身已经集成了 ribbon 功能, 所以这里是可以不用引用的 -->
 <dependency>
    <groupId>org.springframework.cloud</groupId>
    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
 </dependency>
 ```
-这时候，启动你的项目，通过浏览器访问你的服务调用者，你会发现你的服务调用者已经在轮流调用2个服务提供者了。 说明 Ribbon 已经起作用了，Ribbon 默认的负载算法就是 轮询
+这时候，启动你的项目，通过浏览器访问你的服务调用者，你会发现你的服务调用者已经在轮流调用2个服务提供者了。~~说明 Ribbon 已经起作用了，Ribbon 默认的负载算法就是轮询~~  feign 自身就使用了 ribbon 的轮询负载进行调用服务。所以当你的服务提供方有多个的时候，使用 feign 进行远程调用的话, 不做任何的配置， feign 默认就使用了轮询的负载在调用服务。
 
 2 如果你想要修改 Ribbon 的负载算法，可以通过配置文件
 ```yml
